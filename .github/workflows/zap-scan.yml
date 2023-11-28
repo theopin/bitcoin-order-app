@@ -34,7 +34,7 @@ jobs:
         with:
           github-token: ${{ secrets.WORKSHOP6_GITHUB_TOKEN }}
           script: |
-            const reportContent = context.payload.workflow_run.jobs.test.outputs.report_content;
+            const reportContent = github.context.payload.workflow_run.jobs.test.outputs.report_content;
             const issueComment = `
             **ZAP Scan Report:**
             \`\`\`
