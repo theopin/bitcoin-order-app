@@ -32,9 +32,9 @@ jobs:
       - name: Post ZAP Report as Comment
         uses: actions/github-script@v5
         with:
-          github-token: ${{ secrets.WORKSHOP6_GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const reportContent = github.context.payload.workflow_run.jobs.test.outputs.report_content;
+            const reportContent = context.jobs.test.outputs.report_content;
             const issueComment = `
             **ZAP Scan Report:**
             \`\`\`
