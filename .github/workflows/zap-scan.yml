@@ -34,6 +34,8 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
+            const contextJson = JSON.stringify(github.context, null, 2);
+            console.log(contextJson);
             const reportContent = context.jobs.test.outputs.report_content;
             const issueComment = `
             **ZAP Scan Report:**
