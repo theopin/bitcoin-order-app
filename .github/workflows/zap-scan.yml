@@ -22,6 +22,33 @@ jobs:
       - name: ZAP scan
         run: scripts/zap-script.sh
 
+      - name: Get ZAP Report
+        id: get_report
+        run: |
+          # Assuming zap_baseline_report.html is in the root directory
+          report_content=$(cat zap_baseline_report.html)
+          echo "::set-output name=report_content::$report_content"
+
+      - name: Post ZAP Report as Comment
+        uses: actions/github-script@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const reportContent = context.payload.workflow_run.jobs.test.outputs.report_content;
+            const issueComment = `
+            **ZAP Scan Report:**
+            \`\`\`
+            ${reportContent}
+            \`\`\`
+            `;
+            await github.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: issueComment,
+            });
+
+
       - name: Archive production artifacts
         uses: actions/upload-artifact@v2
         with:
